@@ -29,7 +29,7 @@ Swagger file / Models / API documentation:
 ------------------------------------------
 Swagger tools allow to document API and data transfer models definition. It can auto generate models (and APIs) using the provided definitions to make sure client and server models are always in sync. It can also generate documentation. 
 
-File: \WebApi\swagger\swagger.yaml 
+File: \WebApi\swagger\swagger.yaml <br />
 View documentation: Copy contents of swagger.yaml file and paste it to http://editor.swagger.io/ (Swagger Online Editor).
 
 
