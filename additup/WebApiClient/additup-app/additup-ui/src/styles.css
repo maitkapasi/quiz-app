@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+.quiz-item {
+    font-size: 25px;
+    
+}
+
+.btn-xlarge {
+    font-size: 40px !important;
+}

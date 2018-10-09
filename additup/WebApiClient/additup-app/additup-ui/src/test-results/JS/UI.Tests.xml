@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<testsuite name="HeadlessChrome 0.0.0 (Windows 8.1 0.0.0)" package="UI" timestamp="2018-09-20T11:04:43" id="0" hostname="RN-SDES-DEV15" tests="1" errors="0" failures="0" time="0.102">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/68.0.3440.106 Safari/537.36"/>
+  </properties>
+  <testcase name="QuizComponent should create" time="0.102" classname="UI.QuizComponent"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

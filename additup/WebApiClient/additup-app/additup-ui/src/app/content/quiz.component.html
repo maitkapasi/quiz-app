@@ -1,0 +1,48 @@
+<div class="row" >
+  <div class="col-lg-10 col-lg-offset-1">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          Rank: {{session?.rank}}
+          <div class="pull-right" *ngIf="exercise">Time left: {{remainingTime}} seconds</div>
+        </h3>
+      </div>
+      <div class="panel-body">
+
+        <div class="row" *ngIf="!session">
+          <div class="col-md-2 col-md-offset-5" style="text-align:center">
+            <button class="btn btn-primary" [disabled]="loading" type="button" (click)="startSession()">Start Again</button>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="exercise">
+          <div class="col-md-1 col-md-offset-3" style="text-align:center">
+            <label class="quiz-item">{{exercise.expression1}}</label>
+          </div>
+          <div class="col-md-1" style="text-align:center">
+            <label class="quiz-item">+</label>
+          </div>
+          <div class="col-md-1" style="text-align:center">
+            <label class="quiz-item">{{exercise.expression2}}</label>
+          </div>
+          <div class="col-md-1" style="text-align:center">
+            <label class="quiz-item">=</label>
+          </div>
+          <div class="col-md-3">
+            <form class="navbar-form">
+              <div class="form-group">
+                <input type="text" size="5" class="form-control quiz-item" autofocus id="answerToSubmit" name="answerToSubmit" #answerToSubmitElement
+                  [(ngModel)]="answerToSubmit">
+              </div>
+              <button type="submit" id="submitButton" name="submitButton" style="margin-left: 5px" class="btn btn-primary" [disabled]="!answerToSubmit || loading" (click)="submitAnswer()">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        Level: {{session?.level}}
+        <div class="pull-right" *ngIf="loading">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>

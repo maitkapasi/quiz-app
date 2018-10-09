@@ -2,10 +2,9 @@
 Project locations / ports:
 --------------------------
 
-- WebApi .net core project - .\WebApi\WebApi - http://localhost:56000/api/
-- Angular 6 Website (generated using Angular CLI) - .\WebApiClient\additup-app\additup-ui - http://localhost:4200
-- Typescript client library - .\WebApiClient\common
-
+- WebApi .net core project - .\additup\WebApi\WebApi - http://localhost:56000/api/
+- Angular 6 Website (generated using Angular CLI) - .\additup\WebApiClient\additup-app\additup-ui - http://localhost:4200
+- Typescript client library - .\additup\WebApiClient\common
 
 State management:
 -----------------
@@ -38,3 +37,5 @@ Known Issue (and solution):
 -----------------------------
 - Issue: Quiz restarts on browser refresh. 
 - Solution: Quiz data can be stored in local web browser storage to prevent this issue. It can be implemented along with redux pattern for client side state management. A user can also be warned of browser refresh using window.onbeforeunload event. 
+
+Note: Folder structure can be improved, however this is just a quick test app. 

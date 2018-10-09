@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<testsuite name="HeadlessChrome 0.0.0 (Windows 8.1 0.0.0)" package="UI" timestamp="2018-09-20T21:13:23" id="0" hostname="RN-SDES-DEV15" tests="9" errors="0" failures="0" time="0.75">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/68.0.3440.106 Safari/537.36"/>
+  </properties>
+  <testcase name="QuizComponent should create quiz component" time="0.192" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should start a new session and get an exercise on load" time="0.085" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should disable submit button if answer is empty" time="0.074" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should enable submit button if answer is not empty" time="0.062" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should end quiz if time limit passes max time limit " time="0.075" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should get a new quiz on submitting correct answer " time="0.084" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should end the quiz on submitting incorrect answer " time="0.066" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should end the quiz on submitting final correct answer " time="0.057" classname="UI.QuizComponent"/>
+  <testcase name="QuizComponent should restart a new quiz session" time="0.055" classname="UI.QuizComponent"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

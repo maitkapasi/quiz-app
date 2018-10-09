@@ -1,0 +1,152 @@
+swagger: '2.0'
+info:
+  title: AddItUp
+  version: 1.0.0
+  description: Add It Up API Definitions
+basePath: /api
+paths:
+  /session:
+    post: 
+      summary: Creates a new game session.
+      operationId: CreateSession
+      tags:
+        - session
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/Session'            
+  /exercise:
+    get:
+      summary: Returns an exercise.
+      operationId: GetExercise
+      tags:
+        - exercise
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sessionId
+          type: string
+          format: uuid          
+          description: Id of the session requesting an exercise.
+          required: true
+      responses:
+        200:
+          description: Success.
+          schema:
+            $ref: '#/definitions/Exercise'
+        404:
+          description: Session not found.
+        503:
+          description: Unique exercise not available.          
+    post:
+      summary: Validates answer for the exercise.
+      operationId: PostAnswer
+      tags:
+        - exercise        
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: exerciseId
+          type: string
+          format: uuid          
+          description: Id of the exercise to validate answer against. 
+          required: true
+        - in: body
+          name: answer
+          schema:
+            $ref: '#/definitions/Answer'
+          required: true 
+      responses:
+        200:
+          description: Success.
+          schema:
+            $ref: '#/definitions/Result'
+        400:
+          description: Bad Request.
+        404:
+          description: Exercise not found.          
+definitions:
+  RankEnum:
+    type: string
+    description: Possible Ranks
+    enum:
+      - Beginner
+      - Talented
+      - Intermediate
+      - Advanced
+      - Expert
+  Session:
+    type: object
+    required:
+      - id
+      - rank
+      - level
+    properties:
+      id:
+        type: string
+        format: uuid
+      rank:
+        $ref: '#/definitions/RankEnum'
+      level:
+        type: integer
+  Exercise:
+    type: object
+    required:
+      - id
+      - expression1
+      - expression2
+      - timeLimit
+      - createdDateTime
+      - assignedSession
+    properties:
+      id:
+        type: string
+        format: uuid        
+      expression1:
+        type: integer
+      expression2:
+        type: integer
+      timeLimit:
+        type: integer
+      createdDateTime:
+        type: string
+        format: date-time
+      assignedSession:
+        type: string
+        format: uuid
+  Answer:
+    type: object
+    required:
+      - sessionId
+      - exerciseId
+      - submittedAnswer
+    properties:
+      sessionId:
+        type: string
+        format: uuid        
+      exerciseId:
+        type: string
+        format: uuid        
+      submittedAnswer:
+        type: string
+  Result:
+    type: object
+    required:
+      - answerCorrect
+      - allLevelCompleted
+      - rank
+      - level
+    properties:
+      answerCorrect:
+        type: boolean
+      allLevelCompleted:
+        type: boolean
+      rank:
+        $ref: '#/definitions/RankEnum'
+      level:
+        type: integer
