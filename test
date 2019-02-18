@@ -1,0 +1,125 @@
+class Program
+    {
+        static void Main(string[] args)
+        {
+            var startTime = DateTime.Now;
+            //IList<TenorRecord> tenorRecords = new List<TenorRecord>();
+            ConcurrentBag<TenorRecord> tenorRecords = new ConcurrentBag<TenorRecord>();
+            var path = "data.txt";
+            //using (TextFieldParser csvParser = new TextFieldParser(path))
+            //{
+            //    csvParser.SetDelimiters(new string[] { "," });
+            //    csvParser.HasFieldsEnclosedInQuotes = false;
+
+            //    // Skip the row with the column names
+            //    csvParser.ReadLine();
+
+            //    while (!csvParser.EndOfData)
+            //    {
+            //        // Read current line fields, pointer moves to the next line.
+            //        string[] fields = csvParser.ReadFields();
+            //        if (fields.Length == 3)
+            //        {
+            //            string tenor = fields[0];
+            //            string portfolioId = fields[1];
+            //            double value = Convert.ToDouble(fields[2]);
+            //            tenorRecords.Add(new TenorRecord(tenor, portfolioId, value));
+            //        }
+            //        else
+            //        {
+                        
+            //        }
+            //    }
+            //}
+
+            var csvLines = File.ReadAllLines(path);
+
+
+
+            Parallel.ForEach(csvLines.Skip(1), line =>
+            //foreach (var line in csvLines.Skip(1))
+            {
+
+                if (!string.IsNullOrEmpty(line))
+                {
+                    var fields = line.Split(',');
+                    if (fields.Length == 3)
+                    {
+                        string tenor = fields[0];
+                        string portfolioId = fields[1];
+                        double value;
+                        if(Double.TryParse(fields[2], out value))
+                        {
+                            tenorRecords.Add(new TenorRecord(tenor, portfolioId, value));
+                        }
+                    }
+                }
+            //}
+
+            });
+
+            var timeSpan = DateTime.Now - startTime;
+            Console.WriteLine($"Time taken: {timeSpan.TotalSeconds}");
+            var validTenorRecords = tenorRecords.Where(t => t.IsValid == true);
+            File.WriteAllLines("3.txt", validTenorRecords.OrderBy(t => t.Days).ThenBy(t => t.PorfolioId).Select(t => $"{t.Tenor}, {t.PorfolioId}, {t.Value}"));
+            File.WriteAllLines("4.txt", validTenorRecords.OrderBy(t => t.PorfolioId).ThenBy(t => t.Days).Select(t => $"{t.Tenor}, {t.PorfolioId}, {t.Value}"));
+            Console.WriteLine($"End");
+            Console.ReadLine();
+        }
+    }
+    
+    
+    public class TenorRecord
+    {
+        public const string DAY = "d";
+        public const string WEEK = "w";
+        public const string MONTH = "m";
+        public const string YEAR = "y";
+
+        public static readonly Dictionary<string, int> buckets = new Dictionary<string, int>
+        {
+            { DAY, 1 },
+            { WEEK, 7 },
+            { MONTH, 30 },
+            { YEAR, 365 }
+        };
+
+        private TenorRecord() { }
+        public TenorRecord(string tenor, string portfolioId, double value)
+        {
+            Tenor = tenor;
+            PorfolioId = portfolioId;
+            Value = value;
+            Days = null;
+            try
+            {
+                // create a regex to split tenure intervals
+                var tenurRx = new Regex($"({DAY}|{WEEK}|{MONTH}|{YEAR})")
+                            .Split(tenor.ToLower().Trim())
+                            .Where(s => !String.IsNullOrEmpty(s))
+                            .Select(s => s);
+
+                // check to ensure that each tenor interval is specified at most once e.g. 1d1d not allowed
+                if (0 == tenurRx.GroupBy(s => s).Where(g => g.Count() > 1 && g.Key.All(Char.IsLetter)).Count())
+                {
+                    // calculate number of days in the tenor to sort them easily
+                    Days = tenurRx.Select((val, index) => new { Index = index, Value = val })
+                             .GroupBy(g => g.Index / 2)
+                             .Select(g => new { Days = int.Parse(g.ElementAt(0).Value) * buckets[g.ElementAt(1).Value] })
+                             .Sum(g => g.Days);
+                }
+                    
+            }
+            catch { }
+            finally
+            {
+                IsValid = null != Days;
+            }
+        }
+
+        public string Tenor { get; private set; }
+        public int? Days { get; private set; }
+        public string PorfolioId { get; private set; }
+        public double Value { get; private set; }
+        public bool IsValid { get; private set; }
+    }
